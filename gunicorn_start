@@ -1,0 +1,25 @@
+NAME="myproject"
+DJANGODIR=/opt/radassist/myproject
+USER=utsw
+GROUP=utsw
+WORKERS=3
+BIND=unix:/opt/radassist/run/gunicorn.sock
+DJANGO_SETTINGS_MODULE=myproject.settings
+DJANGO_WSGI_MODULE=myproject.wsgi
+LOGLEVEL=error
+
+cd $DJANGODIR
+source radenv/bin/activate
+
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+exec gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $WORKERS \
+  --user=$USER \
+  --group=$GROUP \
+  --bind=$BIND \
+  --log-level=$LOGLEVEL \
+  --log-file=-
+

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TIRADS calc</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form action="" method="post">{% csrf_token %}
+<div class = "container">
+	<br>
+	<div style="background: lightblue; border: 1px solid">
+		<h3><center>ACR TI-RADS calculator</center></h3>
+	</div>
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<button type="submit" class="btn btn-default {{ button1 }}" name="button1" value="nodule1">Nodule 1</button>
+		<button type="submit" class="btn btn-default {{ button2 }}" name="button2" value="nodule2">Nodule 2</button>
+		<button type="submit" class="btn btn-default {{ button3 }}" name="button3" value="nodule3">Nodule 3</button>
+		<button type="submit" class="btn btn-default {{ button4 }}" name="button4" value="nodule4">Nodule 4</button>
+	</div>
+   <div class="col-md-6">
+      <p class='text-right'>mrn: {{mrn}}, accession: {{accession}}, date: {{date}}</p>
+   </div>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md-4">
+		<ol>
+		<li id="Question_1" >
+			<label class="description_1" for="location">Location of nodule</label><br>
+			<input id="element_111" name="location1" class="radio-inline" type="radio" value="right" {{ element111 }}/>
+			<label class="choice" for="element_111">right</label>
+			<input id="element_112" name="location1" class="radio-inline" type="radio" value="left" {{ element112 }}/>
+			<label class="choice" for="element_112">left</label>
+			<input id="element_113" name="location1" class="radio-inline" type="radio" value="isthmus" {{ element113 }}/>
+			<label class="choice" for="element_113">isthmus</label><br>
+
+			<input id="element_121" name="location2" class="radio-inline" type="radio" value="upper" {{ element121 }}/>
+			<label class="choice" for="element_121">upper</label>
+			<input id="element_122" name="location2" class="radio-inline" type="radio" value="mid" {{ element122 }}/>
+			<label class="choice" for="element_122">mid</label>
+			<input id="element_123" name="location2" class="radio-inline" type="radio" value="lower" {{ element123 }}/>
+			<label class="choice" for="element_123">lower</label><br>
+
+			<input id="element_131" name="location3" class="radio-inline" type="radio" value="lateral" {{ element131 }}/>
+			<label class="choice" for="element_131">lateral</label>
+			<input id="element_132" name="location3" class="radio-inline" type="radio" value="medial" {{ element132 }}/>
+			<label class="choice" for="element_132">medial</label><br>
+
+			<input id="element_141" name="location4" class="radio-inline" type="radio" value="anterior" {{ element141 }}/>
+			<label class="choice" for="element_141">anterior</label>
+			<input id="element_142" name="location4" class="radio-inline" type="radio" value="posterior" {{ element142 }}/>
+			<label class="choice" for="element_142">posterior</label>
+		</li><br>
+
+		<li id="Question_2" >
+			<label class="description_2" for="size">Size of nodule (fill at least one)</label><br>
+			<input id="element_21" name="size1" class="element text medium" type="number" min="0" max="9999" style="width: 4em" value="{{ element21 }}" />
+			<label for="size">&nbsp X &nbsp</label>
+			<input id="element_22" name="size2" class="element text medium" type="number" min="0" max="9999" style="width: 4em" value="{{ element22 }}" />
+			<label for="size">&nbsp X &nbsp</label>
+			<input id="element_23" name="size3" class="element text medium" type="number" min="0" max="9999" style="width: 4em" value="{{ element23 }}"/>
+			<label for="size">&nbsp mm</label>
+		</li><br>
+
+		<li id="Question_3" >
+			<label class="description_3" for="composition">Composition</label><br>
+			<input id="element_30" name="composition" class="radio-inline" type="radio" value="0" {{ element30 }}/>
+			<label class="choice" for="element_30">Cystic</label><br>
+         <input id="element_31" name="composition" class="radio-inline" type="radio" value="1" {{ element31 }}/>
+			<label class="choice" for="element_31">Almost completely cystic
+         &nbsp<a href="#" data-toggle="modal" data-target="#predominantlyCysticModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_32" name="composition" class="radio-inline" type="radio" value="2" {{ element32 }}/>
+			<label class="choice" for="element_32">Spongiform
+         &nbsp<a href="#" data-toggle="modal" data-target="#spongiformModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_33" name="composition" class="radio-inline" type="radio" value="3" {{ element33 }}/>
+			<label class="choice" for="element_33">Mixed cystic and solid</label><br>
+			<input id="element_34" name="composition" class="radio-inline" type="radio" value="4" {{ element34 }}/>
+			<label class="choice" for="element_34">Almost completely solid
+         &nbsp<a href="#" data-toggle="modal" data-target="#predominantlySolidModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+         <input id="element_35" name="composition" class="radio-inline" type="radio" value="5" {{ element35 }}/>
+			<label class="choice" for="element_35">Solid
+         &nbsp<a href="#" data-toggle="modal" data-target="#solidModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+         <input id="element_36" name="composition" class="radio-inline" type="radio" value="6" {{ element36 }}/>
+			<label class="choice" for="element_36">Composition obscured by calcification</label><br>
+		</li><br>
+
+		<li id="Question_4" >
+			<label class="description_4" for="echogenicity">Echogenicity</label><br>
+			<input id="element_40" name="echogenicity" class="radio-inline" type="radio" value="0" {{ element40 }}/>
+			<label class="choice" for="element_40">Anechoic</label><br>
+			<input id="element_41" name="echogenicity" class="radio-inline" type="radio" value="1" {{ element41 }}/>
+			<label class="choice" for="element_41">Hyperechoic
+         &nbsp<a href="#" data-toggle="modal" data-target="#hyperechoicModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_42" name="echogenicity" class="radio-inline" type="radio" value="2" {{ element42 }}/>
+         <label class="choice" for="element_42">Isoechoic</label><br>
+			<input id="element_43" name="echogenicity" class="radio-inline" type="radio" value="3" {{ element43 }}/>
+			<label class="choice" for="element_43">Hypoechoic
+         &nbsp<a href="#" data-toggle="modal" data-target="#hypoechoicModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_44" name="echogenicity" class="radio-inline" type="radio" value="4" {{ element44 }}/>
+			<label class="choice" for="element_44">Very hypoechoic
+         &nbsp<a href="#" data-toggle="modal" data-target="#veryHypoechoicModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+         <input id="element_45" name="echogenicity" class="radio-inline" type="radio" value="5" {{ element45 }}/>
+			<label class="choice" for="element_45">Echogenicity is indeterminant</label><br>
+		</li></ol>
+	</div>
+
+	<div class="col-md-4">
+		<ol start="5">
+		<li id="Question_5" >
+			<label class="description_5" for="shape">Shape</label><br>
+         <input id="element_50" name="shape" class="radio-inline" type="radio" value="0" {{ element50 }}/>
+			<label class="choice" for="element_50">Round</label><br>
+			<input id="element_51" name="shape" class="radio-inline" type="radio" value="1" {{ element51 }}/>
+			<label class="choice" for="element_51">Wider-than-tall
+         &nbsp<a href="#" data-toggle="modal" data-target="#solidModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_52" name="shape" class="radio-inline" type="radio" value="2" {{ element52 }}/>
+			<label class="choice" for="element_52">Taller-than-wide
+         &nbsp<a href="#" data-toggle="modal" data-target="#tallerThanWideModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+		</li><br>
+
+		<li id="Question_6" >
+			<label class="description_6" for="margin">Margin</label><br>
+			<input id="element_60" name="margin" class="radio-inline" type="radio" value="0" {{ element60 }}/>
+			<label class="choice" for="element_60">Smooth
+         &nbsp<a href="#" data-toggle="modal" data-target="#smoothModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_61" name="margin" class="radio-inline" type="radio" value="1" {{ element61 }}/>
+			<label class="choice" for="element_61">Ill-defined</label><br>
+			<input id="element_62" name="margin" class="radio-inline" type="radio" value="2" {{ element62 }}/>
+			<label class="choice" for="element_62">Lobulated
+         &nbsp<a href="#" data-toggle="modal" data-target="#lobulatedMarginsModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+         <input id="element_63" name="margin" class="radio-inline" type="radio" value="3" {{ element63 }}/>
+			<label class="choice" for="element_63">Irregular
+         &nbsp<a href="#" data-toggle="modal" data-target="#irregularModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_64" name="margin" class="radio-inline" type="radio" value="4" {{ element64 }}/>
+			<label class="choice" for="element_64">Extra-thyroidal extension
+         &nbsp<a href="#" data-toggle="modal" data-target="#ETEModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+         <input id="element_65" name="margin" class="radio-inline" type="radio" value="5" {{ element65 }}/>
+			<label class="choice" for="element_65">Cannot be determined</label><br>
+		</li><br>
+
+		<li id="Question_7" >
+			<label class="description_7" for="echogenicFoci">Echogenic foci (choose all that apply)</label><br>
+         <input id="element_70" name="noFoci" class="checkbox-inline" type="checkbox" value="0" {{ element70 }}/>
+			<label class="choice_70" for="element_70">None</label><br>
+			<input id="element_71" name="cometTail" class="checkbox-inline" type="checkbox" value="1" {{ element71 }}/>
+			<label class="choice_71" for="element_71">Large comet-tail artifacts
+         &nbsp<a href="#" data-toggle="modal" data-target="#cometTailArtifactsModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_72" name="macroCalcification" class="checkbox-inline" type="checkbox" value="2" {{ element72 }}/>
+			<label class="choice_72" for="element_72">Macrocalcification
+         &nbsp<a href="#" data-toggle="modal" data-target="#macroCalcificationsModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_73" name="rimCalcification" class="checkbox-inline" type="checkbox" value="3" {{ element73 }}/>
+			<label class="choice_73" for="element_73">Peripheral (rim) calcifications
+         &nbsp<a href="#" data-toggle="modal" data-target="#peripheralCalcificationsModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+			<input id="element_74" name="punctateCalcification" class="checkbox-inline" type="checkbox" value="4" {{ element74 }}/>
+			<label class="choice_74" for="element_74">Punctate echogenic foci
+         &nbsp<a href="#" data-toggle="modal" data-target="#punctateEchogenicFociModal"><span class="glyphicon glyphicon-info-sign"></a></label><br>
+		</li></ol><br><br><br>
+	</div>
+
+	<div class="col-md-4">
+      <p>Findings: </p>
+		<div class = "scrollit" style="height: 400px; overflow:scroll; border: 1px solid">
+			<p>{{ findings|linebreaksbr }}</p><br>
+		</div><br>
+      <p>Impression: </p>
+		<div class = "scrollit" style="height: 180px; overflow:scroll; border: 1px solid">
+			<p>{{ impression|linebreaksbr }}</p><br>
+		</div>
+	</div>
+</div>
+
+	<div>
+		<center>
+		<button type="submit" class="btn btn-default" name="submit" value="Compute">Compute</button>
+		<button type="submit" class="btn btn-default" name="reset" value="Reset">Reset</button>
+      <button type="submit" class="btn btn-default" name="save" value="Save">Save to database</button>
+      </center><br>
+	</div>
+   <div>
+      <p>Reference:
+      <ol><li>Tessler et al. ACR Thyroid Imaging, Reporting and DataSystem (TIRADS): White Paper of the ACR TI-RADS Committee. J Am Coll Radiol. 2017 May; 14(5): 587-595.</ol>
+      </p>
+	</div>
+</div>
+</form>
+
+
+
+</body>
+
+<!-- Modal -->
+<div id="predominantlyCysticModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSpredominantlyCystic.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="spongiformModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSspongiform.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="predominantlySolidModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSpredominantlySolid.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="solidModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSsolid.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="hyperechoicModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADShyperechoic.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="hypoechoicModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADShypoechoic.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="veryHypoechoicModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSveryHypoechoic.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tallerThanWideModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADStaller-than-wide.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="smoothModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSsmooth.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="irregularModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSirregular.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="lobulatedMarginsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSlobulatedMargins.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ETEModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSete.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="cometTailArtifactsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADScometTailArtifacts.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="macroCalcificationsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSmacrocalcifications.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="peripheralCalcificationsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSperipheralCalcifications.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="punctateEchogenicFociModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+         <center><img src="http://www.rtsfit.net/static/TIRADSpunctateEchogenicFoci.jpg" class="img-rounded" width="400"></center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>
